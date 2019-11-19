@@ -20,9 +20,19 @@ const withDB = async (operations, res) => {
     }
 }
 
+const isEmtyOrSpaces = (str) => {
+    return str === null || str.match(/^ *$/) !== null;
+}
+
 app.post('/magic8ball/api/answers/', async (req, res) => {
-    // Control empty question
+
     const { question } = req.body;
+
+    if(isEmtyOrSpaces(question)){
+        res.status(200).json('Rethink your question');
+        return;
+    }
+
     const insert = {
         question: question,
         date: new Date(),
